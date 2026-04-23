@@ -10,7 +10,7 @@
             @auth
                 <form action="/logout" method="POST">
                     @csrf
-                    <button type="submit" class="btn">Logout</button>
+                    <button type="submit" class="btn">Log Out</button>
                 </form>
             @endauth
 

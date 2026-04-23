@@ -7,7 +7,7 @@
 
             <x-form.field type="password" name="password" label="Password" />
 
-            <button type="submit" class="btn mt-2 h-10 w-full">Sign in</button>
+            <button type="submit" class="btn mt-2 h-10 w-full" data-test="login-button">Sign in</button>
         </form>
     </x-form>
 </x-layout>
