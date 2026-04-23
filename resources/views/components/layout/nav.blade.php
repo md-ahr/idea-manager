@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto h-16 flex items-center justify-between">
         <div>
             <a href="/" class="">
-                <img src="{{ asset('images/logo.svg') }}" alt="Idea Logo" width="100" />
+                <img src="{{ asset('images/logo.svg') }}" width="100" height="auto" alt="Idea Logo" />
             </a>
         </div>
 
