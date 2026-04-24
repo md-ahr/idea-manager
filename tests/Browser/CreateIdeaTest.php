@@ -11,6 +11,10 @@ it('creates a new idea', function () {
         ->fill('title', 'Test idea')
         ->click('@button-status-completed')
         ->fill('description', 'Test description')
+        ->fill('new-link', 'https://example.com')
+        ->click('@submit-new-link-button')
+        ->fill('new-link', 'https://example2.com')
+        ->click('@submit-new-link-button')
         ->click('Create')
         ->assertPathIs('/ideas');
 
@@ -20,5 +24,6 @@ it('creates a new idea', function () {
         'title' => 'Test idea',
         'status' => 'completed',
         'description' => 'Test description',
+        'links' => ['https://example.com', 'https://example2.com'],
     ]);
 });
