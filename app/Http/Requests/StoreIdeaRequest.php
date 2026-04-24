@@ -19,6 +19,7 @@ class StoreIdeaRequest extends FormRequest
         return true;
     }
 
+    #[\Override]
     protected function prepareForValidation(): void
     {
         $links = $this->input('links', []);

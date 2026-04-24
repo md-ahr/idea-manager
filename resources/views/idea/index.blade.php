@@ -60,9 +60,10 @@
                 newLink: '',
                 links: @js(array_values(array_filter(old('links', [])))),
                 newStep: '',
-                steps: @js(array_values(array_filter(old('steps', []))))
+                steps: @js(array_values(array_filter(old('steps', [])))),
+                wantsImage: @json($errors->has('image')),
             }" action="{{ route('idea.store') }}" method="POST"
-                enctype="multipart/form-data">
+                x-bind:enctype="wantsImage ? 'multipart/form-data' : 'application/x-www-form-urlencoded'">
                 @csrf
 
                 <div class="space-y-4">
@@ -103,9 +104,25 @@
                         placeholder="Describe your idea..." />
 
                     <div class="space-y-2">
-                        <label for="image" class="label">Featured Image</label>
-                        <input type="file" name="image" accept="image/*" />
-                        <x-form.error name="image" />
+                        <template x-if="! wantsImage">
+                            <button type="button" @click="wantsImage = true"
+                                class="btn btn-outlined w-full sm:w-auto text-sm">
+                                Add featured image (optional)
+                            </button>
+                        </template>
+                        <template x-if="wantsImage">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between gap-2">
+                                    <label for="image" class="label mb-0">Featured Image</label>
+                                    <button type="button" @click="wantsImage = false"
+                                        class="text-sm text-muted-foreground hover:text-foreground">
+                                        Remove
+                                    </button>
+                                </div>
+                                <input type="file" name="image" id="image" accept="image/*" />
+                                <x-form.error name="image" />
+                            </div>
+                        </template>
                     </div>
 
                     <div>

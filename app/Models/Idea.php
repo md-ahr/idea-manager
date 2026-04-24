@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\IdeaStatus;
 use Database\Factories\IdeaFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,18 +14,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
+#[Fillable([
+    'title',
+    'description',
+    'status',
+    'links',
+    'image_path',
+])]
 class Idea extends Model
 {
     /** @use HasFactory<IdeaFactory> */
     use HasFactory;
-
-    protected $fillable = [
-        'title',
-        'description',
-        'status',
-        'links',
-        'image_path',
-    ];
 
     protected $casts = [
         'links' => AsArrayObject::class,
