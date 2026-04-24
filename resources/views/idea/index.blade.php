@@ -5,7 +5,7 @@
             <p class="text-muted-foreground text-sm mt-2">Capture your thoughts. Make a plan.</p>
 
             <x-card x-data @click="$dispatch('open-modal', 'create-idea')" is="button" type="button"
-                data-testid="create-idea-button" class="mt-10 space-y-3 cursor-pointer h-32 w-full text-left">
+                data-test="create-idea-button" class="mt-10 space-y-3 cursor-pointer h-32 w-full text-left">
                 What's the idea?
             </x-card>
         </header>
