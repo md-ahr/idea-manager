@@ -24,6 +24,6 @@
     --color-muted-foreground: oklch(0.6 0 0);
 }
 
-body:not(:has([role="dialog"][aria-hidden])) {
+body:has([role="dialog"][data-open="true"]) {
     overflow: hidden;
 }

@@ -28,6 +28,13 @@
             <div class="grid md:grid-cols-2 gap-6">
                 @forelse ($ideas as $idea)
                     <x-card href="{{ route('idea.show', $idea) }}">
+                        @if ($idea->image_path)
+                            <div class="mb-4 -mx-4 -mt-4 rounded-t-lg overflow-hidden">
+                                <img src="{{ asset('storage/' . $idea->image_path) }}" alt="{{ $idea->title }}"
+                                    class="w-full h-48 object-cover">
+                            </div>
+                        @endif
+
                         <h3 class="text-lg text-foreground">{{ $idea->title }}</h3>
 
                         <div class="mt-2">
@@ -48,10 +55,29 @@
         </div>
 
         <x-modal name="create-idea" title="New idea">
-            <form x-data="{ status: 'pending', newLink: '', links: [], newStep: '', steps: [] }" action="{{ route('idea.store') }}" method="POST">
+            <form x-data="{
+                status: @js(old('status', 'pending')),
+                newLink: '',
+                links: @js(array_values(array_filter(old('links', [])))),
+                newStep: '',
+                steps: @js(array_values(array_filter(old('steps', []))))
+            }" action="{{ route('idea.store') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
 
                 <div class="space-y-4">
+                    @if ($errors->any())
+                        <div class="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-destructive"
+                            role="alert">
+                            <p class="font-medium">Could not save this idea.</p>
+                            <ul class="mt-2 list-disc pl-5">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <x-form.field type="text" name="title" label="Title"
                         placeholder="Enter an idea for your title" autofocus required />
 
@@ -67,7 +93,7 @@
                                 </button>
                             @endforeach
 
-                            <input type="hidden" name="status" :value="status" class="input" />
+                            <input type="hidden" name="status" x-model="status" />
                         </div>
 
                         <x-form.error name="status" />
@@ -75,6 +101,12 @@
 
                     <x-form.field type="textarea" name="description" label="Description"
                         placeholder="Describe your idea..." />
+
+                    <div class="space-y-2">
+                        <label for="image" class="label">Featured Image</label>
+                        <input type="file" name="image" accept="image/*" />
+                        <x-form.error name="image" />
+                    </div>
 
                     <div>
                         <fieldset class="space-y-3">
@@ -121,8 +153,9 @@
                             </template>
 
                             <div class="flex gap-x-2 items-center">
-                                <input x-model="newLink" type="url" id="new-link" placeholder="https://example.com"
-                                    autocomplete="url" class="input flex-1" spellcheck="false" data-test="new-link" />
+                                <input x-model="newLink" type="url" id="new-link"
+                                    placeholder="https://example.com" autocomplete="url" class="input flex-1"
+                                    spellcheck="false" data-test="new-link" />
 
                                 <button type="button" @click="links.push(newLink.trim()); newLink = ''"
                                     :disabled="newLink.trim().length === 0" aria-label="Add a new link"
@@ -141,5 +174,9 @@
                 </div>
             </form>
         </x-modal>
+
+        @if ($errors->any())
+            <div x-data x-init="$dispatch('open-modal', 'create-idea')"></div>
+        @endif
     </div>
 </x-layout>

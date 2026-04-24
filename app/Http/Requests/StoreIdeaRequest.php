@@ -19,6 +19,27 @@ class StoreIdeaRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $links = $this->input('links', []);
+        if (is_array($links)) {
+            $links = array_values(array_filter(
+                $links,
+                fn (mixed $link): bool => is_string($link) && $link !== ''
+            ));
+            $this->merge(['links' => $links]);
+        }
+
+        $steps = $this->input('steps', []);
+        if (is_array($steps)) {
+            $steps = array_values(array_filter(
+                $steps,
+                fn (mixed $step): bool => is_string($step) && $step !== ''
+            ));
+            $this->merge(['steps' => $steps]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -34,6 +55,7 @@ class StoreIdeaRequest extends FormRequest
             'links.*' => ['url', 'max:255'],
             'steps' => ['nullable', 'array'],
             'steps.*' => ['string', 'max:255'],
+            'image' => ['nullable', 'image', 'max:5120'],
         ];
     }
 }

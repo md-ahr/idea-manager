@@ -7,8 +7,8 @@
     x-transition:leave-end="opacity-0 -translate-y-4"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs" style="display:none;"
     role="dialog" aria-modal="true" aria-labelledby="modal-{{ $name }}-title" :aria-hidden="!show"
-    tabindex="-1" id="modal-{{ $name }}">
-    <x-card is="div" @click.away="show = false" class="shadow-xl max-w-2xl w-full max-h-[80dvh] overflow-auto">
+    :data-open="show ? 'true' : 'false'" tabindex="-1" id="modal-{{ $name }}">
+    <x-card is="div" @click.away="show = false" class="shadow-xl max-w-2xl w-full max-h-[85dvh] overflow-y-auto">
         <div class="flex items-center justify-between">
             <h2 id="modal-{{ $name }}-title" class="text-2xl font-bold">{{ $title }}</h2>
 

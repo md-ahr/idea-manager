@@ -46,9 +46,20 @@ class IdeaController extends Controller
      */
     public function store(StoreIdeaRequest $request): RedirectResponse
     {
-        $idea = Auth::user()->ideas()->create($request->safe()->except('steps'));
+        $idea = Auth::user()->ideas()->create($request->safe()->except(['steps', 'image']));
 
-        $idea->steps()->createMany(collect($request->steps)->map(fn ($step) => ['description' => $step]));
+        $idea->steps()->createMany(
+            collect($request->input('steps', []))
+                ->filter()
+                ->map(fn (string $step) => ['description' => $step])
+                ->all()
+        );
+
+        if ($request->hasFile('image')) {
+            $idea->update([
+                'image_path' => $request->file('image')->store('ideas', 'public'),
+            ]);
+        }
 
         return to_route('idea.index')->with('success', 'Idea created successfully.');
     }
