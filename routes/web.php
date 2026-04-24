@@ -7,11 +7,14 @@ use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/ideas');
+$ideasRoute = 'ideas';
 
-Route::get('/ideas', [IdeaController::class, 'index'])->name('ideas.index')->middleware('auth');
-Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('ideas.show')->middleware('auth');
-Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('ideas.destroy')->middleware('auth');
+Route::redirect('/', "/$ideasRoute");
+
+Route::get("/$ideasRoute", [IdeaController::class, 'index'])->name('idea.index')->middleware('auth');
+Route::get("/$ideasRoute/{idea}", [IdeaController::class, 'show'])->name('idea.show')->middleware('auth');
+Route::post("/$ideasRoute", [IdeaController::class, 'store'])->name('idea.store')->middleware('auth');
+Route::delete("/$ideasRoute/{idea}", [IdeaController::class, 'destroy'])->name('idea.destroy')->middleware('auth');
 
 Route::get('/register', [RegisterUserController::class, 'create'])->middleware('guest');
 Route::post('/register', [RegisterUserController::class, 'store'])->middleware('guest');

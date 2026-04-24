@@ -1,7 +1,7 @@
 <x-layout>
     <div class="py-8 max-w-4xl mx-auto">
         <div class="flex items-center justify-between">
-            <a href="{{ route('ideas.index') }}" class="text-sm gap-x-2 flex items-center font-medium">
+            <a href="{{ route('idea.index') }}" class="text-sm gap-x-2 flex items-center font-medium">
                 <x-icons.arrow-back />
                 Back to Ideas
             </a>
@@ -12,7 +12,7 @@
                     Edit
                 </button>
 
-                <form action="{{ route('ideas.destroy', $idea) }}" method="POST">
+                <form action="{{ route('idea.destroy', $idea) }}" method="POST">
                     @csrf
                     @method('DELETE')
 
@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <x-card class="block">
+            <x-card>
                 <div class="text-foreground max-w-none">{{ $idea->description }}</div>
             </x-card>
 
