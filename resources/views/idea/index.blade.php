@@ -48,7 +48,7 @@
         </div>
 
         <x-modal name="create-idea" title="New idea">
-            <form x-data="{ status: 'pending', newLink: '', links: [] }" action="{{ route('idea.store') }}" method="POST">
+            <form x-data="{ status: 'pending', newLink: '', links: [], newStep: '', steps: [] }" action="{{ route('idea.store') }}" method="POST">
                 @csrf
 
                 <div class="space-y-4">
@@ -75,6 +75,35 @@
 
                     <x-form.field type="textarea" name="description" label="Description"
                         placeholder="Describe your idea..." />
+
+                    <div>
+                        <fieldset class="space-y-3">
+                            <legend class="label">Actionable Steps</legend>
+
+                            <template x-for="(step, index) in steps" :key="step">
+                                <div class="flex gap-x-2 items-center">
+                                    <input type="text" name="steps[]" x-model="step"
+                                        class="input pointer-events-none" readonly />
+                                    <button type="button" @click="steps.splice(index, 1)" aria-label="Remove step"
+                                        class="form-muted-icon">
+                                        <x-icons.close />
+                                    </button>
+                                </div>
+                            </template>
+
+                            <div class="flex gap-x-2 items-center">
+                                <input x-model="newStep" type="text" id="new-step"
+                                    placeholder="What needs to be done?" class="input flex-1" spellcheck="false"
+                                    data-test="new-step" />
+
+                                <button type="button" @click="steps.push(newStep.trim()); newStep = ''"
+                                    :disabled="newStep.trim().length === 0" aria-label="Add a new step"
+                                    class="form-muted-icon" data-test="submit-new-step-button">
+                                    <x-icons.close class="rotate-45" />
+                                </button>
+                            </div>
+                        </fieldset>
+                    </div>
 
                     <div>
                         <fieldset class="space-y-3">
