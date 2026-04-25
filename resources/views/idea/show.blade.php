@@ -27,7 +27,7 @@
             @if ($idea->image_path)
                 <div class="rounded-lg overflow-hidden">
                     <img src="{{ asset('storage/' . $idea->image_path) }}" alt="{{ $idea->title }}"
-                        class="w-full h-auto object-cover">
+                        class="w-full max-h-110 object-cover">
                 </div>
             @endif
 
