@@ -41,7 +41,5 @@ it('notifies the original email if update', function () {
         ->click('Update Account')
         ->assertSee('Your profile has been updated.');
 
-    Notification::assertSentOnDemand(EmailChanged::class, function (EmailChanged $notification, $channels, $notifiable) use ($originalEmail) {
-        return $notifiable->routeNotificationFor('mail') === $originalEmail;
-    });
+    Notification::assertSentOnDemand(EmailChanged::class, fn (EmailChanged $notification, $channels, $notifiable) => $notifiable->routeNotificationFor('mail') === $originalEmail);
 });
