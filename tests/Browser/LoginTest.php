@@ -9,7 +9,7 @@ it('logs in a user', function () {
         ->fill('email', $user->email)
         ->fill('password', 'password')
         ->click('@login-button')
-        ->assertPathIs('/');
+        ->assertRoute('idea.index');
 
     $this->assertAuthenticated();
 });
