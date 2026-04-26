@@ -7,6 +7,8 @@
         </div>
 
         <div class="flex items-center gap-x-5">
+            <a href="/profile/edit" class="btn btn-outlined">Edit Profile</a>
+
             @auth
                 <form action="/logout" method="POST">
                     @csrf

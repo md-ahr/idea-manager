@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreIdeaRequest extends FormRequest
+class IdeaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,7 +35,14 @@ class StoreIdeaRequest extends FormRequest
         if (is_array($steps)) {
             $steps = array_values(array_filter(
                 $steps,
-                fn (mixed $step): bool => is_string($step) && $step !== ''
+                function (mixed $step): bool {
+                    if (! is_array($step)) {
+                        return false;
+                    }
+                    $description = $step['description'] ?? '';
+
+                    return is_string($description) && trim($description) !== '';
+                }
             ));
             $this->merge(['steps' => $steps]);
         }
@@ -55,7 +62,8 @@ class StoreIdeaRequest extends FormRequest
             'links' => ['nullable', 'array'],
             'links.*' => ['url', 'max:255'],
             'steps' => ['nullable', 'array'],
-            'steps.*' => ['string', 'max:255'],
+            'steps.*.description' => ['string', 'max:255'],
+            'steps.*.completed' => ['boolean'],
             'image' => ['nullable', 'image', 'max:5120'],
         ];
     }
